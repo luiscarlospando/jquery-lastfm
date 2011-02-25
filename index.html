@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de">
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
-	<title>Twitter jQuery Plugin Test</title>
+	<title>Twitter jQuery Plugin Demo</title>
 	
 	<style type="text/css">
 		body, html {
@@ -56,6 +56,7 @@
 			padding: 5px;
 			position: relative;
 			overflow: hidden;
+			min-height: 75px;
 		}
 		
 		.lastfm ul li:nth-child(even) {
@@ -103,7 +104,15 @@
 			limit:		5,
 			cover:		true,
 			datetime:	true,
-			refresh:	30
+			refresh:	0
+		});
+		$('#lastBox2').lastplayed({
+			apikey:		'b25b959554ed76058ac220b7b2e0a026',
+			username:	'tagedieb',
+			limit:		5,
+			cover:		true,
+			datetime:	true,
+			refresh:	0
 		});
 	});
 	
@@ -111,8 +120,9 @@
 </head>
 <body>
 	<div id="wrapper">
-		<h1>Last.FM jQuery Plugin Test</h1>
+		<h1>Last.FM jQuery Plugin Demo</h1>
 		<div id="lastBox" class="lastfm"></div>
+		<div id="lastBox2" class="lastfm"></div>
 	</div>
 </body>
 </html>
