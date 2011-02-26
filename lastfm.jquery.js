@@ -86,7 +86,7 @@ $(document).ready(function() {
 				//create ul if not exists
 				$list = $myDiv.children('ul');
 				if (!$list.length) {
-					$list = $("<ul>").appendTo( $myDiv );
+					$list = $("<ul>").appendTo( $myDiv.html('') );
 				}
 				
 				//walk through each Track - reversed to fill up list from latest to newest
@@ -160,13 +160,12 @@ $(document).ready(function() {
 						//add listitem to list
 						$list.prepend(listitem);
 						
-						if(tracknowplaying == false) {
+						if(!tracknowplaying) {
 							lasttime = tracktime;
 						}
 					}
 					
 				});
-					
 				
 				//throw old entries away
 				if (options.grow === false) {
