@@ -1,8 +1,10 @@
 /*
 
-
 simple last.fm jQuery plugin
 shows recently played tracks
+
+Athor: Ringo Rohe
+       - with much help from Douglas Neiner
 
 Options:
 

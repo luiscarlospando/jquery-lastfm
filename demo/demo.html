@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+	<title>Twitter jQuery Plugin Demo</title>
+
+	<link rel="stylesheet" type="text/css" href="demo.css" />
+	
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+	<script type="text/javascript" src="../lastfm.jquery.js"></script>
+	<script type="text/javascript">
+	
+	$(document).ready(function() {
+		$('#lastBox').lastplayed({
+			apikey:		'b25b959554ed76058ac220b7b2e0a026',
+			username:	'TheRockstarr',
+			limit:		5,
+			cover:		true,
+			datetime:	true,
+			refresh:	30
+		});
+		$('#lastBox2').lastplayed({
+			apikey:		'b25b959554ed76058ac220b7b2e0a026',
+			username:	'tagedieb',
+			limit:		5,
+			cover:		true,
+			datetime:	true,
+			refresh:	30
+		});
+	});
+	
+	</script>
+</head>
+<body>
+	<h1>Last.FM jQuery Plugin Demo</h1>
+	<div id="lastBox" class="lastfm"></div>
+</body>
+</html>

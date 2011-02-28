@@ -1,0 +1,63 @@
+
+
+.lastfm {
+	width: 300px;
+	border: 2px solid #BBB;
+	border-radius: 5px;
+	background: #DEF;
+	float: left;
+	margin-right: 5px;
+}
+
+.lastfm ul {
+	list-style: none;
+	margin: 0px;
+	padding: 0px;
+}
+
+.lastfm ul li {
+	clear: both;
+	padding: 5px;
+	position: relative;
+	overflow: hidden;
+	min-height: 75px;
+}
+
+.lastfm ul li img {
+	float: left;
+	margin: 0px 5px 5px 0px;
+	border: 1px solid #333;
+}
+
+.lastfm ul li:nth-child(even) {
+	background: #EEF5FF;
+}
+
+.lastfm ul li.nowplaying {
+	background: #DFD;
+}
+
+.lastfm ul li .track {
+	margin: 0px;
+	font-size: 13px;
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+
+.lastfm ul li .artist {
+	margin: 0px;
+	font-size: 12px;
+}
+
+.lastfm ul li .album {
+	margin: 0px;
+	font-size: 12px;
+}
+
+.lastfm ul li .date {
+	margin: 0px;
+	font-size: 11px;
+	color: #BBB;
+	float: right;
+	margin-left: 5px;
+}
