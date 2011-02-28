@@ -50,7 +50,8 @@ $(document).ready(function() {
 			lasttime = 0,
 			refresh	 = parseInt(options['refresh'], 10),
 			$list,
-			timer;
+			timer,
+			lastCurrentPlaying = false;
 		
 		if (refresh > 0) {
 			timer = window.setInterval(function(){ 
@@ -63,7 +64,6 @@ $(document).ready(function() {
 		function doLastPlayedStuff() {
 
 			// remove error div if exists
-			
 			$myDiv.children('.error').remove();
 
 			//create URL
@@ -79,6 +79,9 @@ $(document).ready(function() {
 			//sending request
 			$.getJSON(url, params, function(data) {
 				
+				var foundCurrentPlayingTrack = false;
+				
+				//check for errors
 				if ( !data || !data.recenttracks ) {
 					return error('Username "' + options.username + '" does not exist!');
 				} else if( !data.recenttracks.track ) {
@@ -101,10 +104,15 @@ $(document).ready(function() {
 					}
 					
 					//check if entry is currently playing
-					tracknowplaying = track['@attr'] && track['@attr'].nowplaying == 'true';
-					
-					//remove old nowplaying entry
-					$list.children('li.nowplaying').remove();
+					if( track['@attr'] && track['@attr'].nowplaying == 'true' ) {
+						foundCurrentPlayingTrack = true;
+						if( lastCurrentPlaying.name != track.name ) {
+							lastCurrentPlaying = track;
+							tracknowplaying = true;
+							//remove old nowplaying entry
+							$list.children('li.nowplaying').remove();
+						}
+					}
 					
 					if(tracktime > lasttime || tracknowplaying) {
 						
@@ -168,6 +176,12 @@ $(document).ready(function() {
 					}
 					
 				});
+				
+				if( !foundCurrentPlayingTrack ) {
+					lastCurrentPlaying = false;
+					//remove old nowplaying entry
+					$list.children('li.nowplaying').remove();
+				}
 				
 				//throw old entries away
 				if (options.grow === false) {
