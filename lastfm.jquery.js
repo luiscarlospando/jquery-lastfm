@@ -15,6 +15,7 @@ cover:          (bool) show covers - optional, default is true
 datetime:       (bool) show date and time - optional, default is true
 refresh:        (int) number of seconds to check for new tracks - optional, default is 0 (no refresh)
 grow:           (bool) if true new tracks extend the box, if false older tracks will be removed - optional, default is false
+shownowplaying: (bool) shows currently playing tracks - optional, default is true
 
 
 Usage:
@@ -114,7 +115,7 @@ $(document).ready(function() {
 						}
 					}
 					
-					if(tracktime > lasttime || tracknowplaying) {
+					if(tracktime > lasttime || (tracknowplaying && options.shownowplaying)) {
 						
 						// ------------ create list item -----------
 						listitem = $( "<li>", { 
@@ -185,7 +186,9 @@ $(document).ready(function() {
 				
 				//throw old entries away
 				if (options.grow === false) {
-					$list.children().filter(":gt(" + options.limit + ")").remove();
+					while($list.children().length > options.limit) {
+						$list.children('li').last().remove();
+					}
 				}
 			
 			});
@@ -222,11 +225,12 @@ $(document).ready(function() {
 	};
 	
 	$.fn.lastplayed.defaults = {
-		limit:		20,
-		refresh:	0,
-		cover:		true,
-		datetime:	true,
-		grow:		false
+		limit:			20,
+		refresh:		0,
+		cover:			true,
+		datetime:		true,
+		grow:			false,
+		shownowplaying:	true
 	};
 
 }(jQuery));

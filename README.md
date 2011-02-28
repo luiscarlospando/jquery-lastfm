@@ -24,3 +24,4 @@ Here is an example to show the recently played tracks:
 - datetime:       (bool) show date and time - optional, default is true
 - refresh:        (int) number of seconds to check for new tracks - optional, default is 0 (no refresh)
 - grow:           (bool) if true new tracks extend the box, if false older tracks will be removed - optional, default is false
+- shownowplaying: (bool) shows currently playing tracks - optional, default is true
