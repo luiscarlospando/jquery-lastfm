@@ -17,12 +17,22 @@
 			limit:			5,
 			refresh:		30
 		});
+		$('#nowPlayingBox').nowplaying({
+			apikey:			'b25b959554ed76058ac220b7b2e0a026',
+			username:		'TheRockstarr',
+			refresh:		30,
+			icon:			'http://cdn.last.fm/flatness/global/icon_eq.gif',
+			notplayingtext:	'nothing playing right now...'
+		});
 	});
 	
 	</script>
 </head>
 <body>
 	<h1>Last.FM jQuery Plugin Demo</h1>
+	<h2>Recent Tracks</h2>
 	<div id="lastBox" class="lastfm"></div>
+	<h2>Now Playing</h2>
+	<div id="nowPlayingBox"></div>
 </body>
 </html>

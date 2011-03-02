@@ -6,6 +6,9 @@ shows recently played tracks
 Athor: Ringo Rohe
        - with much help from Douglas Neiner
 
+
+-- lastplayed --
+
 Options:
 
 apikey:         (string) Last.fm API key - get it from here: http://www.lastfm.com/api/account
@@ -34,6 +37,31 @@ $(document).ready(function() {
 
 
 
+-- nowplaying --
+
+Options
+
+apikey:         (string) Last.fm API key - get it from here: http://www.lastfm.com/api/account
+username:       (string) username
+refresh:        (int) number of seconds to check for new tracks - optional, default is 0 (no refresh)
+icon:			(string) url of a Icon showed beside the text - optional, default is false
+hide:			(bool) hides the element when nothing is playing - optional, default is false
+notplayingtext:	(string) text that is shown when nothing is played - optional, default is 'nothing playing'
+
+Usage:
+
+$('#nowPlayingBox').nowplaying({
+	apikey:			'b25b9595...',
+	username:		'Username',
+	refresh:		30,
+	icon:			'http://cdn.last.fm/flatness/global/icon_eq.gif',
+	hide:			false,
+	notplayingtext:	'some text'
+});
+
+
+
+
 ############## BUGS ####################
 - tell me if you find some
 
@@ -43,7 +71,7 @@ $(document).ready(function() {
 
 (function ($) {
 
-	/* ###################################### Class definition ################################# */
+	/* ######################### Recent Tracks Class definition ################################# */
 
 	var recentTracksClass = function (elem, options) {
 
@@ -209,12 +237,119 @@ $(document).ready(function() {
 
 	};
 
-	/* ###################################### Class ends here ################################# */
+	/* ######################## Recent Tracks Class ends here ################################# */
 
+
+
+
+
+	/* ######################### Now Playing Class definition ################################# */
+
+	var nowPlayingClass = function (elem, options) {
+
+		var $myDiv	 = elem,
+			refresh	 = parseInt(options['refresh'], 10),
+			timer,
+			lastCurrentPlaying = false;
+		
+		if (refresh > 0) {
+			timer = window.setInterval(function(){ 
+				nowPlayingInterval();
+			}, refresh * 1000);
+		}
+		
+		nowPlayingInterval();
+	
+		function nowPlayingInterval() {
+
+			// remove error div if exists
+			$myDiv.children('.error').remove();
+
+			//create URL
+			var url = 'http://ws.audioscrobbler.com/2.0/?callback=?',
+				params = {
+					method:  "user.getrecenttracks",
+					format:  "json",
+					limit:   1,
+					user:    options.username,
+					api_key: options.apikey
+				};
+			
+			//sending request
+			$.getJSON(url, params, function(data) {
+				
+				//check for errors
+				if ( !data || !data.recenttracks ) {
+					return error('Username "' + options.username + '" does not exist!');
+				} else if( !data.recenttracks.track ) {
+					return error('"' + options.username + '" has no tracks to show!');
+				}
+				
+				var track = data.recenttracks.track[0];
+				
+				if( track && track['@attr'] && track['@attr'].nowplaying == 'true' ) {
+					var html = '';
+					
+					if (options.icon) {
+						html = html + '<img src="' + options.icon + '" class="icon" alt="now playing icon" />';
+					}
+					
+					html = html + '<span class="track">' + track.artist['#text'] + '</span>';
+					html = html + ' - ';
+					html = html + '<span class="track">' + track.name + '</span>';
+					if(track.album['#text']) {
+						html = html + ' (';
+						html = html + '<span class="track">' + track.album['#text'] + '</span>';
+						html = html + ')';
+					}
+					
+					$myDiv.show();
+					update(html);
+				} else {
+					if(options.hide) {
+						$myDiv.hide();
+					} else {
+						update(options.notplayingtext)
+					}
+				}
+
+			});
+
+		}
+		
+		function error( message ) {
+			 $("<p>", {
+					className: "error",
+					html: message
+				}).appendTo($myDiv);
+				window.clearInterval(timer);
+		}
+		
+		function update( html ) {
+			$myDiv.html( html );
+		}
+
+	};
+
+	/* ######################## Now Playing Class ends here ################################# */
+
+
+
+
+
+	
+	
+	
+	/* ##################################### Recent Tracks Function ########################### */
+	
 	$.fn.lastplayed = function (options) {
 		var opts = $.extend({}, $.fn.lastplayed.defaults, options);
 		
 		if (typeof(options.username) === "undefined") {
+			return this;
+		}
+		
+		if (typeof(options.apikey) === "undefined") {
 			return this;
 		}
 		
@@ -231,6 +366,34 @@ $(document).ready(function() {
 		datetime:		true,
 		grow:			false,
 		shownowplaying:	true
+	};
+	
+	
+	
+	/* ################################# Now Playing Function ################################ */
+	
+	$.fn.nowplaying = function (options) {
+		var opts = $.extend({}, $.fn.nowplaying.defaults, options);
+		
+		if (typeof(options.username) === "undefined") {
+			return this;
+		}
+		
+		if (typeof(options.apikey) === "undefined") {
+			return this;
+		}
+		
+		return this.each(function(){
+			nowPlayingClass($(this), opts);
+		});
+		
+	};
+
+	$.fn.nowplaying.defaults = {
+		refresh:		0,
+		icon:			false,
+		hide:			false,
+		notplayingtext: 'nothing playing'
 	};
 
 }(jQuery));

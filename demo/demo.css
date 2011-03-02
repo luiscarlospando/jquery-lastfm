@@ -5,7 +5,6 @@
 	border: 2px solid #BBB;
 	border-radius: 5px;
 	background: #DEF;
-	float: left;
 	margin-right: 5px;
 	font-family: "Trebuchet MS", Tahoma, Verdana, sans-serif;
 }
@@ -61,4 +60,25 @@
 	color: #BBB;
 	float: right;
 	margin-left: 5px;
+}
+
+
+
+
+
+
+#nowPlayingBox {
+	width: 600px;
+	border: 2px solid #BBB;
+	border-radius: 5px;
+	background: #DEF;
+	margin: 0px 5px 5px 0px;
+	padding: 5px;
+	font-weight: normal;
+	font-family: "Trebuchet MS", Tahoma, Verdana, sans-serif;
+	font-size: 13px;
+}
+
+#nowPlayingBox .icon {
+	margin-right: 5px;
 }
