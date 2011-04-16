@@ -15,6 +15,7 @@ apikey:         (string) Last.fm API key - get it from here: http://www.lastfm.c
 username:       (string) username
 limit:          (int) Number of tracks to load - optional, default is 20
 cover:          (bool) show covers - optional, default is true
+coversize:      (int) cover image size - optional, default is 64
 datetime:       (bool) show date and time - optional, default is true
 refresh:        (int) number of seconds to check for new tracks - optional, default is 0 (no refresh)
 grow:           (bool) if true new tracks extend the box, if false older tracks will be removed - optional, default is false
@@ -156,7 +157,7 @@ $('#nowPlayingBox').nowplaying({
 							if (track.image[2]['#text']) {
 								$("<img>", {
 									src: track.image[2]['#text'],
-									width: "64"
+									width: parseInt(options.coversize)
 								}).appendTo(listitem);
 							}
 						}
@@ -363,6 +364,7 @@ $('#nowPlayingBox').nowplaying({
 		limit:			20,
 		refresh:		0,
 		cover:			true,
+		coversize:		64,
 		datetime:		true,
 		grow:			false,
 		shownowplaying:	true
