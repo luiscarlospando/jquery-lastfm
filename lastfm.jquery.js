@@ -225,7 +225,7 @@ $('#nowPlayingBox').nowplaying({
 
 						if(options.artistlinks){
 							$artist.wrapInner($("<a>", {
-								href: lastfmLinkPrefix+(track.artist['#text']+'/').replace(/[\s]/gi,'+'),
+								href: lastfmLinkPrefix+(track.artist['#text'].replace(/[\s]/gi,'+')),
 								target: options.linktarget
 							}));
 						}
@@ -239,7 +239,7 @@ $('#nowPlayingBox').nowplaying({
 						if(options.artistlinks){
 							var artistpath = [
 								track.artist['#text'],'/',
-								track.album['#text'],'/'
+								track.album['#text']
 							].join('').replace(/[\s]/gi,'+');
 
 							$album.wrapInner($("<a>", {
