@@ -20,6 +20,11 @@ datetime:       (bool) show date and time - optional, default is true
 refresh:        (int) number of seconds to check for new tracks - optional, default is 0 (no refresh)
 grow:           (bool) if true new tracks extend the box, if false older tracks will be removed - optional, default is false
 shownowplaying: (bool) shows currently playing tracks - optional, default is true
+albumlinks:		(bool) wraps album text in a link to last.fm - optional, default is false
+coverlinks:		(bool) wraps cover text in a link to last.fm - optional, default is false
+artistlinks:	(bool) wraps artist text in a link to last.fm - optional, default is false
+tracklinks:		(bool) wraps track text in a link to last.fm - optional, default is false
+linktarget:		(string) the target attribute value for album, cover, artist, and track links (if enabled) - optional, default is `_blank`
 
 
 Usage:
@@ -81,7 +86,8 @@ $('#nowPlayingBox').nowplaying({
 			refresh	 = parseInt(options['refresh'], 10),
 			$list,
 			timer,
-			lastCurrentPlaying = false;
+			lastCurrentPlaying = false,
+			lastfmLinkPrefix = 'http://www.last.fm/music/';
 		
 		if (refresh > 0) {
 			timer = window.setInterval(function(){ 
@@ -155,10 +161,23 @@ $('#nowPlayingBox').nowplaying({
 						// ----------------- IMAGE -----------------
 						if (options.cover) {
 							if (track.image[2]['#text']) {
-								$("<img>", {
+								var $cover = $("<img>", {
+									alt: track.artist['#text'],
 									src: track.image[2]['#text'],
 									width: parseInt(options.coversize)
 								}).appendTo(listitem);
+								
+								if(options.coverlinks){
+									var coverpath = [
+										track.artist['#text'],'/',
+										track.album['#text']
+									].join('').replace(/[\s]/gi,'+');
+
+									$cover.wrap($("<a>", {
+										href: lastfmLinkPrefix+coverpath,
+										target: options.linktarget
+									}));
+								}
 							}
 						}
 						
@@ -180,22 +199,54 @@ $('#nowPlayingBox').nowplaying({
 						
 						
 						// ----------------- TRACK -----------------
-						$("<div>", {
+						var $track = $("<div>", {
 							className: 'track',
 							html: track.name
-						}).appendTo(listitem);
-						
+						}).appendTo(listitem);	
+
+						if(options.tracklinks){
+							var trackpath = [
+								track.artist['#text'],'/',
+								track.album['#text'],'/',
+								track.name
+							].join('').replace(/[\s]/gi,'+');
+
+							$track.wrapInner($("<a>", {
+								href: lastfmLinkPrefix+trackpath,
+								target: options.linktarget
+							}));
+						}
+
 						// ---------------- ARTIST -----------------
-						$("<div>", {
+						var $artist = $("<div>", {
 							className: 'artist',
 							html: track.artist['#text']
 						}).appendTo(listitem);
-						
+
+						if(options.artistlinks){
+							$artist.wrapInner($("<a>", {
+								href: lastfmLinkPrefix+(track.artist['#text']+'/').replace(/[\s]/gi,'+'),
+								target: options.linktarget
+							}));
+						}
+
 						// ---------------- ALBUM ------------------
-						$("<div>", {
+						var $album = $("<div>", {
 							className: 'album',
 							html: track.album['#text']
 						}).appendTo(listitem);
+
+						if(options.artistlinks){
+							var artistpath = [
+								track.artist['#text'],'/',
+								track.album['#text'],'/'
+							].join('').replace(/[\s]/gi,'+');
+
+							$album.wrapInner($("<a>", {
+								href: lastfmLinkPrefix+artistpath,
+								target: options.linktarget
+							}));
+						}
 						
 						//add listitem to list
 						$list.prepend(listitem);
@@ -367,7 +418,12 @@ $('#nowPlayingBox').nowplaying({
 		coversize:		64,
 		datetime:		true,
 		grow:			false,
-		shownowplaying:	true
+		shownowplaying:	true,
+		albumlinks:		false,
+		coverlinks:		false,
+		artistlinks:	false,
+		tracklinks:		false,
+		linktarget:		'_blank'
 	};
 	
 	
